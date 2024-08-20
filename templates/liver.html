@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liver Disease Prediction</title>
+</head>
+<body>
+    <h1>Liver Disease Prediction</h1>
+    <form action="{{ url_for('predict', disease='liver') }}" method="post">
+        <label for="Age">Age:</label>
+        <input type="number" id="Age" name="Age" required><br><br>
+
+        <label for="Gender">Gender:</label>
+        <select id="Gender" name="Gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br><br>
+
+        <label for="Total_Bilirubin">Total Bilirubin:</label>
+        <input type="number" step="0.1" id="Total_Bilirubin" name="Total_Bilirubin" required><br><br>
+
+        <label for="Direct_Bilirubin">Direct Bilirubin:</label>
+        <input type="number" step="0.1" id="Direct_Bilirubin" name="Direct_Bilirubin" required><br><br>
+
+        <label for="Alkaline_Phosphotase">Alkaline Phosphotase:</label>
+        <input type="number" id="Alkaline_Phosphotase" name="Alkaline_Phosphotase" required><br><br>
+
+        <label for="Alamine_Aminotransferase">Alamine Aminotransferase:</label>
+        <input type="number" id="Alamine_Aminotransferase" name="Alamine_Aminotransferase" required><br><br>
+
+        <label for="Aspartate_Aminotransferase">Aspartate Aminotransferase:</label>
+        <input type="number" id="Aspartate_Aminotransferase" name="Aspartate_Aminotransferase" required><br><br>
+
+        <label for="Total_Protiens">Total Proteins:</label>
+        <input type="number" step="0.1" id="Total_Protiens" name="Total_Protiens" required><br><br>
+
+        <label for="Albumin">Albumin:</label>
+        <input type="number" step="0.1" id="Albumin" name="Albumin" required><br><br>
+
+        <label for="Albumin_and_Globulin_Ratio">Albumin and Globulin Ratio:</label>
+        <input type="number" step="0.1" id="Albumin_and_Globulin_Ratio" name="Albumin_and_Globulin_Ratio" required><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction is not none %}
+        <h2>Prediction Result:</h2>
+        <p>
+            {% if prediction == 1 %}
+                <strong>Risk Warning:</strong> Based on the data provided, you have a higher risk of liver disease. 
+                We recommend consulting with a healthcare provider for further evaluation.
+            {% else %}
+                <strong>Low Risk:</strong> Based on the data provided, your risk of liver disease is lower. 
+                However, maintaining a healthy lifestyle and regular check-ups is always beneficial.
+            {% endif %}
+        </p>
+    {% endif %}
+</body>
+</html>

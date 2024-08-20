@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction</title>
+</head>
+<body>
+    <h1>Diabetes Prediction</h1>
+    <form action="{{ url_for('predict', disease='diabetes') }}" method="post">
+        <label for="pregnancies">Pregnancies:</label>
+        <input type="number" id="pregnancies" name="Pregnancies" required><br><br>
+
+        <label for="glucose">Glucose:</label>
+        <input type="number" step="0.1" id="glucose" name="Glucose" required><br><br>
+
+        <label for="blood_pressure">Blood Pressure:</label>
+        <input type="number" step="0.1" id="blood_pressure" name="BloodPressure" required><br><br>
+
+        <label for="skin_thickness">Skin Thickness:</label>
+        <input type="number" step="0.1" id="skin_thickness" name="SkinThickness" required><br><br>
+
+        <label for="insulin">Insulin:</label>
+        <input type="number" step="0.1" id="insulin" name="Insulin" required><br><br>
+
+        <label for="bmi">Body Mass Index (BMI):</label>
+        <input type="number" step="0.1" id="bmi" name="BMI" required><br><br>
+
+        <label for="diabetes_pedigree_function">Diabetes Pedigree Function:</label>
+        <input type="number" step="0.1" id="diabetes_pedigree_function" name="DiabetesPedigreeFunction" required><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="Age" required><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction is not none %}
+        <h2>Prediction Result:</h2>
+        <p>
+            {% if prediction == 1 %}
+                <strong>Risk Warning:</strong> Based on the data provided, you have a higher risk of diabetes. 
+                We recommend consulting with a healthcare provider for further evaluation.
+            {% else %}
+                <strong>Low Risk:</strong> Based on the data provided, your risk of diabetes is lower. 
+                However, maintaining a healthy lifestyle and regular check-ups is always beneficial.
+            {% endif %}
+        </p>
+    {% endif %}
+</body>
+</html>

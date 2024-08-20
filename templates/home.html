@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Wellness</title>
+</head>
+<body>
+    <h1>Welcome to Predict Wellness</h1>
+    <p>Select a disease to predict:</p>
+    <ul>
+        <li><a href="{{ url_for('predict', disease='heart') }}">Heart Disease</a></li>
+        <li><a href="{{ url_for('predict', disease='diabetes') }}">Diabetes</a></li>
+        <li><a href="{{ url_for('predict', disease='liver') }}">Liver Disease</a></li>
+        <li><a href="{{ url_for('predict', disease='stroke') }}">Stroke</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disease Prediction</title>
+</head>
+<body>
+    <h1>Disease Prediction Form</h1>
+    <form action="/predict" method="post">
+        <label for="disease">Select Disease:</label>
+        <select id="disease" name="disease" required>
+            <option value="heart">Heart Disease</option>
+            <option value="diabetes">Diabetes</option>
+            <option value="stroke">Stroke</option>
+            <option value="liver">Liver Disease</option>
+        </select>
+        <br><br>
+
+        <!-- Example fields for Heart Disease -->
+        <div id="heartFields">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+            <br><br>
+            <!-- Add other fields as needed -->
+        </div>
+
+        <!-- Example fields for Diabetes -->
+        <div id="diabetesFields" style="display: none;">
+            <label for="pregnancies">Pregnancies:</label>
+            <input type="number" id="pregnancies" name="pregnancies" required>
+            <br><br>
+            <!-- Add other fields as needed -->
+        </div>
+
+        <!-- Example fields for Stroke -->
+        <div id="strokeFields" style="display: none;">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+            <br><br>
+            <!-- Add other fields as needed -->
+        </div>
+
+        <!-- Example fields for Liver -->
+        <div id="liverFields" style="display: none;">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+            <br><br>
+            <!-- Add other fields as needed -->
+        </div>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    <script>
+        document.getElementById('disease').addEventListener('change', function() {
+            document.querySelectorAll('#heartFields, #diabetesFields, #strokeFields, #liverFields').forEach(function(div) {
+                div.style.display = 'none';
+            });
+            var selectedDisease = this.value;
+            document.getElementById(selectedDisease + 'Fields').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

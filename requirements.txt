@@ -1,2 +1,7 @@
 pandas
-numpy
+numpy==1.23.5
+scikit-learn
+xgboost
+catboost==1.2
+matplotlib
+flask
