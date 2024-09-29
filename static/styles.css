@@ -1,0 +1,368 @@
+/* ===================================================
+   General Styling
+   =================================================== */
+   body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 0;
+    color: #333333;
+}
+
+/* ===================================================
+   Navigation Bar Styling
+   =================================================== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #004d40;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Circular logo */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #80cbc4;
+}
+
+/* ===================================================
+   Main Header Styling
+   =================================================== */
+.main-header {
+    text-align: center;
+    margin: 60px 0 40px 0;
+}
+
+.main-header h1 {
+    font-size: 3rem;
+    color: #004d40;
+    margin: 0;
+    animation: fadeInDown 1s ease-out;
+}
+
+/* ===================================================
+   Content Wrapper Styling
+   =================================================== */
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto 60px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ===================================================
+   Disease Selection Styling
+   =================================================== */
+.disease-selection {
+    flex: 1;
+    max-width: 600px;
+}
+
+.disease-selection h2 {
+    font-size: 2rem;
+    color: #004d40;
+    margin-bottom: 20px;
+}
+
+.disease-list {
+    list-style: none;
+    padding: 0;
+}
+
+.disease-list li {
+    margin: 15px 0;
+}
+
+.disease-list a {
+    display: block;
+    padding: 15px 20px;
+    background-color: #e0f2f1;
+    color: #00796b;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.disease-list a:hover {
+    background-color: #b2dfdb;
+    transform: translateY(-3px);
+}
+
+/* ===================================================
+   Form Styling
+   =================================================== */
+form {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+form h1 {
+    text-align: center;
+    color: #004d40;
+    margin-bottom: 25px;
+    font-size: 2.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    flex: 1 1 250px; /* Adjust width as needed */
+    font-weight: bold;
+    margin-right: 10px;
+    color: #333333;
+}
+
+.form-group input[type="number"],
+.form-group select {
+    flex: 2 1 400px; /* Adjust width as needed */
+    padding: 10px 15px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input[type="number"]:focus,
+.form-group select:focus {
+    border-color: #004d40;
+    outline: none;
+}
+
+form input[type="submit"] {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #00796b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+form input[type="submit"]:hover {
+    background-color: #004d40;
+    transform: scale(1.02);
+}
+
+/* ===================================================
+   Prediction Result Styling
+   =================================================== */
+.prediction-result {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #e8f5e9;
+    border-left: 5px solid #004d40;
+    border-radius: 8px;
+}
+
+.prediction-result h2 {
+    color: #004d40;
+    margin-bottom: 15px;
+}
+
+.prediction-result p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* ===================================================
+   About Page Styling
+   =================================================== */
+.about-section {
+    margin-bottom: 40px;
+}
+
+.about-section h2 {
+    font-size: 2rem;
+    color: #004d40;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e0f2f1;
+    padding-bottom: 5px;
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555555;
+}
+
+.team-members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.team-member {
+    flex: 1 1 250px;
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.team-member h3 {
+    font-size: 1.3rem;
+    color: #004d40;
+    margin-bottom: 5px;
+}
+
+.team-member p {
+    font-size: 1rem;
+    color: #777777;
+}
+
+.contact-info {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info li {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.contact-info a {
+    color: #00796b;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: #004d40;
+}
+
+/* ===================================================
+   Chatbot Styling
+   =================================================== */
+df-messenger {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* ===================================================
+   Animations
+   =================================================== */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================================
+   Media Queries for Responsiveness
+   =================================================== */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .main-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .disease-selection, .chatbot-wrapper {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    form {
+        padding: 20px;
+    }
+
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-group label {
+        margin-bottom: 5px;
+    }
+
+    .form-group input[type="number"],
+    .form-group select {
+        flex: 1 1 100%;
+    }
+
+    .team-members {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .team-member {
+        width: 100%;
+        max-width: 300px;
+    }
+}
