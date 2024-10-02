@@ -4,57 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liver Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Liver Disease Prediction</h1>
-    <form action="{{ url_for('predict', disease='liver') }}" method="post">
-        <label for="Age">Age:</label>
-        <input type="number" id="Age" name="Age" required><br><br>
+    <!-- Navigation bar with logo and buttons -->
+    <nav class="navbar">
+        <img src="{{ url_for('static', filename='logo.webp') }}" alt="Predict Wellness Logo" class="logo">
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+        </ul>
+    </nav>
 
-        <label for="Gender">Gender:</label>
-        <select id="Gender" name="Gender" required>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-        </select><br><br>
+    <main class="content-wrapper">
+        <form action="{{ url_for('predict', disease='liver') }}" method="post">
+            <h1>Liver Disease Prediction</h1>
+            
+            <div class="form-group">
+                <label for="Age">Age:</label>
+                <input type="number" id="Age" name="Age" required>
+            </div>
 
-        <label for="Total_Bilirubin">Total Bilirubin:</label>
-        <input type="number" step="0.1" id="Total_Bilirubin" name="Total_Bilirubin" required><br><br>
+            <div class="form-group">
+                <label for="Gender">Gender:</label>
+                <select id="Gender" name="Gender" required>
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
 
-        <label for="Direct_Bilirubin">Direct Bilirubin:</label>
-        <input type="number" step="0.1" id="Direct_Bilirubin" name="Direct_Bilirubin" required><br><br>
+            <div class="form-group">
+                <label for="Total_Bilirubin">Total Bilirubin:</label>
+                <input type="number" step="0.1" id="Total_Bilirubin" name="Total_Bilirubin" required>
+            </div>
 
-        <label for="Alkaline_Phosphotase">Alkaline Phosphotase:</label>
-        <input type="number" id="Alkaline_Phosphotase" name="Alkaline_Phosphotase" required><br><br>
+            <div class="form-group">
+                <label for="Direct_Bilirubin">Direct Bilirubin:</label>
+                <input type="number" step="0.1" id="Direct_Bilirubin" name="Direct_Bilirubin" required>
+            </div>
 
-        <label for="Alamine_Aminotransferase">Alamine Aminotransferase:</label>
-        <input type="number" id="Alamine_Aminotransferase" name="Alamine_Aminotransferase" required><br><br>
+            <div class="form-group">
+                <label for="Alkaline_Phosphotase">Alkaline Phosphotase:</label>
+                <input type="number" id="Alkaline_Phosphotase" name="Alkaline_Phosphotase" required>
+            </div>
 
-        <label for="Aspartate_Aminotransferase">Aspartate Aminotransferase:</label>
-        <input type="number" id="Aspartate_Aminotransferase" name="Aspartate_Aminotransferase" required><br><br>
+            <div class="form-group">
+                <label for="Alamine_Aminotransferase">Alamine Aminotransferase:</label>
+                <input type="number" id="Alamine_Aminotransferase" name="Alamine_Aminotransferase" required>
+            </div>
 
-        <label for="Total_Protiens">Total Proteins:</label>
-        <input type="number" step="0.1" id="Total_Protiens" name="Total_Protiens" required><br><br>
+            <div class="form-group">
+                <label for="Aspartate_Aminotransferase">Aspartate Aminotransferase:</label>
+                <input type="number" id="Aspartate_Aminotransferase" name="Aspartate_Aminotransferase" required>
+            </div>
 
-        <label for="Albumin">Albumin:</label>
-        <input type="number" step="0.1" id="Albumin" name="Albumin" required><br><br>
+            <div class="form-group">
+                <label for="Total_Protiens">Total Proteins:</label>
+                <input type="number" step="0.1" id="Total_Protiens" name="Total_Protiens" required>
+            </div>
 
-        <label for="Albumin_and_Globulin_Ratio">Albumin and Globulin Ratio:</label>
-        <input type="number" step="0.1" id="Albumin_and_Globulin_Ratio" name="Albumin_and_Globulin_Ratio" required><br><br>
+            <div class="form-group">
+                <label for="Albumin">Albumin:</label>
+                <input type="number" step="0.1" id="Albumin" name="Albumin" required>
+            </div>
 
-        <input type="submit" value="Predict">
-    </form>
+            <div class="form-group">
+                <label for="Albumin_and_Globulin_Ratio">Albumin and Globulin Ratio:</label>
+                <input type="number" step="0.1" id="Albumin_and_Globulin_Ratio" name="Albumin_and_Globulin_Ratio" required>
+            </div>
 
-    {% if prediction is not none %}
-        <h2>Prediction Result:</h2>
-        <p>
-            {% if prediction == 1 %}
-                <strong>Risk Warning:</strong> Based on the data provided, you have a higher risk of liver disease. 
-                We recommend consulting with a healthcare provider for further evaluation.
-            {% else %}
-                <strong>Low Risk:</strong> Based on the data provided, your risk of liver disease is lower. 
-                However, maintaining a healthy lifestyle and regular check-ups is always beneficial.
-            {% endif %}
-        </p>
-    {% endif %}
+            <input type="submit" value="Predict">
+        </form>
+
+        {% if prediction is not none %}
+            <div class="prediction-result">
+                <h2>Prediction Result:</h2>
+                <p>
+                    {% if prediction == 1 %}
+                        <strong>Risk Warning:</strong> Based on the data provided, you have a higher risk of liver disease. 
+                        We recommend consulting with a healthcare provider for further evaluation.
+                    {% else %}
+                        <strong>Low Risk:</strong> Based on the data provided, your risk of liver disease is lower. 
+                        However, maintaining a healthy lifestyle and regular check-ups is always beneficial.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </main>
+
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+        chat-icon="https://as2.ftcdn.net/v2/jpg/01/34/29/31/1000_F_134293169_ymHT6Lufl0i94WzyE0NNMyDkiMCH9HWx.jpg"
+        intent="WELCOME"
+        chat-title="Ask_Me"
+        agent-id="56eda098-8dd9-4db1-be9f-9112c15f5805"
+        language-code="en">
+    </df-messenger>
 </body>
 </html>

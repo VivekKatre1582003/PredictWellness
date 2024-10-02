@@ -4,15 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Predict Wellness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Welcome to Predict Wellness</h1>
-    <p>Select a disease to predict:</p>
-    <ul>
-        <li><a href="{{ url_for('predict', disease='heart') }}">Heart Disease</a></li>
-        <li><a href="{{ url_for('predict', disease='diabetes') }}">Diabetes</a></li>
-        <li><a href="{{ url_for('predict', disease='liver') }}">Liver Disease</a></li>
-        <li><a href="{{ url_for('predict', disease='stroke') }}">Stroke</a></li>
-    </ul>
+    <!-- Navigation bar with logo and buttons -->
+    <nav class="navbar">
+        <img src="{{ url_for('static', filename='logo.webp') }}" alt="Predict Wellness Logo" class="logo">
+        <ul class="nav-links">
+            <li><a href="{{url_for('home')}}">Home</a></li>
+            <li><a href="{{url_for('about')}}">About</a></li>
+        </ul>
+    </nav>
+
+    <header class="main-header">
+        <h1>Welcome to Predict Wellness</h1>
+    </header>
+
+    <main class="content-wrapper">
+        <section class="disease-selection">
+            <h2>Select a Disease to Predict:</h2>
+            <ul class="disease-list">
+                <li><a href="{{ url_for('predict', disease='heart') }}">Heart Disease</a></li>
+                <li><a href="{{ url_for('predict', disease='diabetes') }}">Diabetes</a></li>
+                <li><a href="{{ url_for('predict', disease='liver') }}">Liver Disease</a></li>
+                <li><a href="{{ url_for('predict', disease='stroke') }}">Stroke</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+        chat-icon="https://as2.ftcdn.net/v2/jpg/01/34/29/31/1000_F_134293169_ymHT6Lufl0i94WzyE0NNMyDkiMCH9HWx.jpg"
+        intent="WELCOME"
+        chat-title="Ask_Me"
+        agent-id="56eda098-8dd9-4db1-be9f-9112c15f5805"
+        language-code="en">
+    </df-messenger>
 </body>
 </html>

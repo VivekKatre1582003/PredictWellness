@@ -3,49 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diabetes Prediction</title>
+    <title>Diabetes Prediction - Predict Wellness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Diabetes Prediction</h1>
-    <form action="{{ url_for('predict', disease='diabetes') }}" method="post">
-        <label for="pregnancies">Pregnancies:</label>
-        <input type="number" id="pregnancies" name="Pregnancies" required><br><br>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <img src="{{ url_for('static', filename='logo.webp') }}" alt="Predict Wellness Logo" class="logo">
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+        </ul>
+    </nav>
 
-        <label for="glucose">Glucose:</label>
-        <input type="number" step="0.1" id="glucose" name="Glucose" required><br><br>
+    <!-- Main Content -->
+    <main class="content-wrapper">
+        <form action="{{ url_for('predict', disease='diabetes') }}" method="post">
+            <h1>Diabetes Prediction</h1>
+            
+            <!-- Pregnancies -->
+            <div class="form-group">
+                <label for="pregnancies">Pregnancies:</label>
+                <input type="number" id="pregnancies" name="Pregnancies" min="0" required>
+            </div>
 
-        <label for="blood_pressure">Blood Pressure:</label>
-        <input type="number" step="0.1" id="blood_pressure" name="BloodPressure" required><br><br>
+            <!-- Glucose -->
+            <div class="form-group">
+                <label for="glucose">Glucose:</label>
+                <input type="number" step="0.1" id="glucose" name="Glucose" min="0" required>
+            </div>
 
-        <label for="skin_thickness">Skin Thickness:</label>
-        <input type="number" step="0.1" id="skin_thickness" name="SkinThickness" required><br><br>
+            <!-- Blood Pressure -->
+            <div class="form-group">
+                <label for="blood_pressure">Blood Pressure:</label>
+                <input type="number" step="0.1" id="blood_pressure" name="BloodPressure" min="0" required>
+            </div>
 
-        <label for="insulin">Insulin:</label>
-        <input type="number" step="0.1" id="insulin" name="Insulin" required><br><br>
+            <!-- Skin Thickness -->
+            <div class="form-group">
+                <label for="skin_thickness">Skin Thickness:</label>
+                <input type="number" step="0.1" id="skin_thickness" name="SkinThickness" min="0" required>
+            </div>
 
-        <label for="bmi">Body Mass Index (BMI):</label>
-        <input type="number" step="0.1" id="bmi" name="BMI" required><br><br>
+            <!-- Insulin -->
+            <div class="form-group">
+                <label for="insulin">Insulin:</label>
+                <input type="number" step="0.1" id="insulin" name="Insulin" min="0" required>
+            </div>
 
-        <label for="diabetes_pedigree_function">Diabetes Pedigree Function:</label>
-        <input type="number" step="0.1" id="diabetes_pedigree_function" name="DiabetesPedigreeFunction" required><br><br>
+            <!-- BMI -->
+            <div class="form-group">
+                <label for="bmi">Body Mass Index (BMI):</label>
+                <input type="number" step="0.1" id="bmi" name="BMI" min="0" required>
+            </div>
 
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="Age" required><br><br>
+            <!-- Diabetes Pedigree Function -->
+            <div class="form-group">
+                <label for="diabetes_pedigree_function">Diabetes Pedigree Function:</label>
+                <input type="number" step="0.1" id="diabetes_pedigree_function" name="DiabetesPedigreeFunction" min="0" required>
+            </div>
 
-        <input type="submit" value="Predict">
-    </form>
+            <!-- Age -->
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="Age" min="0" required>
+            </div>
 
-    {% if prediction is not none %}
-        <h2>Prediction Result:</h2>
-        <p>
-            {% if prediction == 1 %}
-                <strong>Risk Warning:</strong> Based on the data provided, you have a higher risk of diabetes. 
-                We recommend consulting with a healthcare provider for further evaluation.
-            {% else %}
-                <strong>Low Risk:</strong> Based on the data provided, your risk of diabetes is lower. 
-                However, maintaining a healthy lifestyle and regular check-ups is always beneficial.
-            {% endif %}
-        </p>
-    {% endif %}
+            <!-- Submit Button -->
+            <input type="submit" value="Predict">
+        </form>
+
+        <!-- Prediction Result -->
+        {% if prediction is not none %}
+            <div class="prediction-result">
+                <h2>Prediction Result:</h2>
+                <p>
+                    {% if prediction == 1 %}
+                        <strong>Risk Warning:</strong> Based on the data provided, you have a higher risk of diabetes. 
+                        We recommend consulting with a healthcare provider for further evaluation.
+                    {% else %}
+                        <strong>Low Risk:</strong> Based on the data provided, your risk of diabetes is lower. 
+                        However, maintaining a healthy lifestyle and regular check-ups is always beneficial.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </main>
+
+    <!-- Chatbot Integration -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+        chat-icon="https://as2.ftcdn.net/v2/jpg/01/34/29/31/1000_F_134293169_ymHT6Lufl0i94WzyE0NNMyDkiMCH9HWx.jpg"
+        intent="WELCOME"
+        chat-title="Ask_Me"
+        agent-id="56eda098-8dd9-4db1-be9f-9112c15f5805"
+        language-code="en">
+    </df-messenger>
 </body>
 </html>

@@ -4,90 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heart Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Heart Disease Prediction</h1>
-    <form action="{{ url_for('predict', disease='heart') }}" method="post">
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required><br><br>
+    <!-- Navigation bar with logo and buttons -->
+    <nav class="navbar">
+        <img src="{{ url_for('static', filename='logo.webp') }}" alt="Predict Wellness Logo" class="logo">
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+        </ul>
+    </nav>
 
-        <label for="sex">Sex:</label>
-        <select id="sex" name="sex" required>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-        </select><br><br>
+    <main class="content-wrapper">
+        <form action="{{ url_for('predict', disease='heart') }}" method="post">
+            <h1>Heart Disease Prediction</h1>
+            
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+            </div>
 
-        <label for="cp">Chest Pain Type:</label>
-        <select id="cp" name="cp" required>
-            <option value="0">Typical Angina</option>
-            <option value="1">Atypical Angina</option>
-            <option value="2">Non-Anginal Pain</option>
-            <option value="3">Asymptomatic</option>
-        </select><br><br>
+            <div class="form-group">
+                <label for="sex">Sex:</label>
+                <select id="sex" name="sex" required>
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
 
-        <label for="trestbps">Resting Blood Pressure (mm Hg):</label>
-        <input type="number" id="trestbps" name="trestbps" required><br><br>
+            <div class="form-group">
+                <label for="cp">Chest Pain Type:</label>
+                <select id="cp" name="cp" required>
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="0">Typical Angina</option>
+                    <option value="1">Atypical Angina</option>
+                    <option value="2">Non-Anginal Pain</option>
+                    <option value="3">Asymptomatic</option>
+                </select>
+            </div>
 
-        <label for="chol">Cholesterol (mg/dl):</label>
-        <input type="number" id="chol" name="chol" required><br><br>
+            <div class="form-group">
+                <label for="trestbps">Resting Blood Pressure (mm Hg):</label>
+                <input type="number" id="trestbps" name="trestbps" required>
+            </div>
 
-        <label for="thalach">Maximum Heart Rate Achieved:</label>
-        <input type="number" id="thalach" name="thalach" required><br><br>
+            <div class="form-group">
+                <label for="chol">Cholesterol (mg/dl):</label>
+                <input type="number" id="chol" name="chol" required>
+            </div>
 
-        <label for="oldpeak">Depression Induced by Exercise Relative to Rest:</label>
-        <input type="number" step="0.1" id="oldpeak" name="oldpeak" required><br><br>
+            <div class="form-group">
+                <label for="thalach">Maximum Heart Rate Achieved:</label>
+                <input type="number" id="thalach" name="thalach" required>
+            </div>
 
-        <label for="exang">Exercise Induced Angina:</label>
-        <select id="exang" name="exang" required>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select><br><br>
+            <div class="form-group">
+                <label for="oldpeak">Depression Induced by Exercise Relative to Rest:</label>
+                <input type="number" step="0.1" id="oldpeak" name="oldpeak" required>
+            </div>
 
-        <label for="slope">Slope of the Peak Exercise ST Segment:</label>
-        <select id="slope" name="slope" required>
-            <option value="0">Upsloping</option>
-            <option value="1">Flat</option>
-            <option value="2">Downsloping</option>
-        </select><br><br>
+            <div class="form-group">
+                <label for="exang">Exercise Induced Angina:</label>
+                <select id="exang" name="exang" required>
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
 
-        <label for="ca">Number of Major Vessels Colored by Fluoroscopy:</label>
-        <input type="number" id="ca" name="ca" min="0" max="3" required><br><br>
+            <div class="form-group">
+                <label for="slope">Slope of the Peak Exercise ST Segment:</label>
+                <select id="slope" name="slope" required>
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="0">Upsloping</option>
+                    <option value="1">Flat</option>
+                    <option value="2">Downsloping</option>
+                </select>
+            </div>
 
-        <label for="thal">Thalassemia:</label>
-        <select id="thal" name="thal" required>
-            <option value="3">Normal</option>
-            <option value="6">Fixed Defect</option>
-            <option value="7">Reversible Defect</option>
-        </select><br><br>
+            <div class="form-group">
+                <label for="ca">Number of Major Vessels Colored by Fluoroscopy:</label>
+                <input type="number" id="ca" name="ca" min="0" max="3" required>
+            </div>
 
-        <label for="restecg">Resting Electrocardiographic Results:</label>
-        <select id="restecg" name="restecg" required>
-            <option value="0">Normal</option>
-            <option value="1">Having ST-T wave abnormality</option>
-            <option value="2">Showing probable or definite left ventricular hypertrophy</option>
-        </select><br><br>
-    
-        <label for="fbs">Fasting Blood Sugar > 120 mg/dl:</label>
-        <select id="fbs" name="fbs" required>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select><br><br>
-        
-        <input type="submit" value="Predict">
-    </form>
+            <div class="form-group">
+                <label for="thal">Thalassemia:</label>
+                <select id="thal" name="thal" required>
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="3">Normal</option>
+                    <option value="6">Fixed Defect</option>
+                    <option value="7">Reversible Defect</option>
+                </select>
+            </div>
 
-    {% if prediction is not none %}
-        <h2>Prediction Result:</h2>
-        <p>
-            {% if prediction == 1 %}
-                <strong>Risk Warning:</strong> Based on the data provided, you have a higher risk of heart disease. 
-                We recommend consulting with a healthcare provider for further evaluation.
-            {% else %}
-                <strong>Low Risk:</strong> Based on the data provided, your risk of heart disease is lower. 
-                However, maintaining a healthy lifestyle and regular check-ups is always beneficial.
-            {% endif %}
-        </p>
-    {% endif %}
+            <div class="form-group">
+                <label for="restecg">Resting Electrocardiographic Results:</label>
+                <select id="restecg" name="restecg" required>
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="0">Normal</option>
+                    <option value="1">Having ST-T wave abnormality</option>
+                    <option value="2">Showing probable or definite left ventricular hypertrophy</option>
+                </select>
+            </div>
 
+            <div class="form-group">
+                <label for="fbs">Fasting Blood Sugar > 120 mg/dl:</label>
+                <select id="fbs" name="fbs" required>
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <input type="submit" value="Predict">
+        </form>
+
+        {% if prediction is not none %}
+            <div class="prediction-result">
+                <h2>Prediction Result:</h2>
+                <p>
+                    {% if prediction == 1 %}
+                        <strong>Risk Warning:</strong> Based on the data provided, you have a higher risk of heart disease. 
+                        We recommend consulting with a healthcare provider for further evaluation.
+                    {% else %}
+                        <strong>Low Risk:</strong> Based on the data provided, your risk of heart disease is lower. 
+                        However, maintaining a healthy lifestyle and regular check-ups is always beneficial.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </main>
+
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+        chat-icon="https://as2.ftcdn.net/v2/jpg/01/34/29/31/1000_F_134293169_ymHT6Lufl0i94WzyE0NNMyDkiMCH9HWx.jpg"
+        intent="WELCOME"
+        chat-title="Ask_Me"
+        agent-id="56eda098-8dd9-4db1-be9f-9112c15f5805"
+        language-code="en">
+    </df-messenger>
 </body>
 </html>

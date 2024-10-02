@@ -1,0 +1,49 @@
+<!-- templates/about.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Predict Wellness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <img src="{{ url_for('static', filename='logo.webp') }}" alt="Predict Wellness Logo" class="logo">
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+        </ul>
+    </nav>
+
+    <main class="content-wrapper">
+        <div class="about-container">
+            <h1>About Predict Wellness</h1>
+            <p>
+                Welcome to Predict Wellness, your personalized health companion designed to help you monitor and improve your well-being. Our platform leverages cutting-edge machine learning algorithms and data science to provide accurate insights into your health trends and potential risks, empowering you to take proactive measures.
+
+At Predict Wellness, we believe in the power of technology to enhance healthcare. Whether you're tracking daily habits or analyzing long-term wellness patterns, our goal is to provide clear, actionable predictions that guide you toward a healthier life. With a focus on preventive care, we aim to support individuals in making informed health decisions, ultimately reducing the risk of illness.
+            </p>
+            <p>
+                <strong>Why Predict Wellness?</strong><br>
+
+Personalized Insights: Tailored health predictions based on your unique data.<br>
+Evidence-Based Predictions: Our algorithms are rooted in the latest medical research.<br>
+User-Friendly Interface: Designed for ease of use, making health tracking simple.<br>
+Proactive Health Management: Stay ahead of potential health issues with early detection.<br>
+Join us on the journey to a healthier future with Predict Wellness.<br>
+
+            </p>
+            <h1>About Us</h1>
+            <div class="team-member">
+                <img src="{{ url_for('static', filename='Developer.png') }}" alt="Developer">
+                <div>
+                    <h2>Vivek Katre</h2>
+                    <p><strong>Role:</strong> Lead Developer</p>
+                    <p>Creator of this website</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
