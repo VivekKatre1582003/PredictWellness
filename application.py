@@ -1,16 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from src.pipeline.predict_pipeline import PredictPipeline, HeartData, DiabetesData, StrokeData, LiverData
 
-application = Flask(__name__)   #we are using this application in python.config elasticbin
-app.secret_key = 'your_secret_key'
+application = Flask(__name__)   
+application.secret_key = 'VIVEK2003'
 
-# Home page
-@app.route('/')
+@application.route('/')
 def home():
     return render_template('home.html')
 
-# Disease page (for each disease)
-@app.route('/predict/<disease>', methods=['GET', 'POST'])
+
+@application.route('/about')
+def about():
+    return render_template('about.html')
+
+@application.route('/predict/<disease>', methods=['GET', 'POST'])
 def predict(disease):
     if request.method == 'POST':
         try:
@@ -91,4 +94,4 @@ def predict(disease):
     return render_template(f'{disease}.html', prediction=None)
 
 if __name__ == '__main__':
-    application.run()
+    application.run(debug=True)
