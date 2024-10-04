@@ -94,4 +94,4 @@ def predict(disease):
     return render_template(f'{disease}.html', prediction=None)
 
 if __name__ == '__main__':
-    application.run(debug=True)
+    application.run()
