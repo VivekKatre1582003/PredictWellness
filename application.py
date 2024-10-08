@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from src.pipeline.predict_pipeline import PredictPipeline, HeartData, DiabetesData, StrokeData, LiverData
 
