@@ -56,7 +56,7 @@ class ModelTrainer:
                     'learning_rate': [0.01, 0.1, 0.2]
                 }
             }
-
+#Here we are trying all the models and selecting a model which provide high precision.
             model_report = evaluate_models(X_train, y_train, X_test, y_test, models, params)
             
             best_model_score = max(sorted(model_report.values()))
