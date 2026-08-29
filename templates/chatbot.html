@@ -1,0 +1,353 @@
+<!-- templates/chatbot.html -->
+<div id="pw-chatbot-container">
+    <!-- Floating Chat Trigger Button -->
+    <button id="pw-chat-toggle" class="pw-chat-toggle-btn" aria-label="Open Medical AI Chat" title="Chat with PredictWellness AI">
+        <div class="pw-chat-pulse"></div>
+        <svg class="pw-chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            <path d="M12 7v6"></path>
+            <path d="M9 10h6"></path>
+        </svg>
+        <span class="pw-chat-badge">AI</span>
+    </button>
+
+    <!-- Chatbot Window -->
+    <div id="pw-chat-window" class="pw-chat-window pw-chat-hidden" role="dialog" aria-modal="true" aria-labelledby="pw-chat-title">
+        <!-- Header -->
+        <div class="pw-chat-header">
+            <div class="pw-chat-header-info">
+                <div class="pw-bot-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
+                </div>
+                <div>
+                    <h3 id="pw-chat-title">PredictWellness AI</h3>
+                    <span class="pw-bot-status"><span class="pw-status-dot"></span> Medical Assistant • Online</span>
+                </div>
+            </div>
+            <div class="pw-chat-header-actions">
+                <button id="pw-chat-clear" class="pw-header-btn" title="Clear Conversation" aria-label="Clear chat">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                </button>
+                <button id="pw-chat-close" class="pw-header-btn" title="Close Chat" aria-label="Close chat">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Messages Area -->
+        <div id="pw-chat-messages" class="pw-chat-messages">
+            <!-- Welcome message -->
+            <div class="pw-message pw-bot-message">
+                <div class="pw-msg-avatar">🩺</div>
+                <div class="pw-msg-bubble">
+                    <p>Hello! I am your <strong>PredictWellness AI Health Assistant</strong>, powered by Google Gemini.</p>
+                    <p>I can help answer questions about your health, understand medical terms (cholesterol, glucose, liver enzymes, blood pressure), and provide evidence-based wellness tips.</p>
+                    <p class="pw-disclaimer-pill">⚠️ <em>For educational purposes only. Always consult a licensed doctor for emergencies.</em></p>
+                </div>
+            </div>
+
+            <!-- Suggestion chips -->
+            <div id="pw-suggestions" class="pw-suggestions">
+                <span class="pw-chip" data-prompt="What are early warning signs of Heart Disease?">❤️ Heart Disease Signs</span>
+                <span class="pw-chip" data-prompt="What is a normal fasting blood sugar level for Diabetes?">🩸 Normal Glucose Range</span>
+                <span class="pw-chip" data-prompt="How can I keep my liver healthy and prevent fatty liver?">🧪 Liver Health Tips</span>
+                <span class="pw-chip" data-prompt="What are the F.A.S.T. warning signs of a Stroke?">🧠 Stroke Warning Signs</span>
+            </div>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div id="pw-typing-indicator" class="pw-typing pw-hidden">
+            <span class="pw-msg-avatar">🩺</span>
+            <div class="pw-typing-bubble">
+                <div class="pw-typing-dot"></div>
+                <div class="pw-typing-dot"></div>
+                <div class="pw-typing-dot"></div>
+            </div>
+        </div>
+
+        <!-- Input Box -->
+        <form id="pw-chat-form" class="pw-chat-form" onsubmit="return false;">
+            <div class="pw-input-wrapper">
+                <textarea 
+                    id="pw-chat-input" 
+                    placeholder="Ask any medical or health question..." 
+                    rows="1" 
+                    maxlength="1000"
+                    aria-label="Your medical question"></textarea>
+                <button type="submit" id="pw-send-btn" class="pw-send-btn" title="Send message" aria-label="Send message">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+            <div class="pw-input-footer">
+                <span>Gemini AI • Privacy Protected</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+(function() {
+    // Chat State
+    const chatHistory = [];
+    let isWaitingForResponse = false;
+    let currentContext = null;
+
+    // DOM Elements
+    const toggleBtn = document.getElementById('pw-chat-toggle');
+    const chatWindow = document.getElementById('pw-chat-window');
+    const closeBtn = document.getElementById('pw-chat-close');
+    const clearBtn = document.getElementById('pw-chat-clear');
+    const chatForm = document.getElementById('pw-chat-form');
+    const chatInput = document.getElementById('pw-chat-input');
+    const messagesContainer = document.getElementById('pw-chat-messages');
+    const typingIndicator = document.getElementById('pw-typing-indicator');
+    const suggestionsContainer = document.getElementById('pw-suggestions');
+
+    // Toggle Chat Window
+    function toggleChat(forceOpen = false) {
+        if (forceOpen) {
+            chatWindow.classList.remove('pw-chat-hidden');
+            chatInput.focus();
+        } else {
+            chatWindow.classList.toggle('pw-chat-hidden');
+            if (!chatWindow.classList.contains('pw-chat-hidden')) {
+                chatInput.focus();
+                scrollToBottom();
+            }
+        }
+    }
+
+    if (toggleBtn) toggleBtn.addEventListener('click', () => toggleChat());
+    if (closeBtn) closeBtn.addEventListener('click', () => toggleChat(false));
+
+    // Clear Chat
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            chatHistory.length = 0;
+            currentContext = null;
+            messagesContainer.innerHTML = `
+                <div class="pw-message pw-bot-message">
+                    <div class="pw-msg-avatar">🩺</div>
+                    <div class="pw-msg-bubble">
+                        <p>Conversation cleared. How else can I assist your health and wellness today?</p>
+                    </div>
+                </div>
+            `;
+            if (suggestionsContainer) {
+                messagesContainer.appendChild(suggestionsContainer);
+            }
+            scrollToBottom();
+        });
+    }
+
+    // Auto-expand textarea
+    if (chatInput) {
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    }
+
+    // Suggestions Click
+    if (suggestionsContainer) {
+        suggestionsContainer.addEventListener('click', function(e) {
+            const chip = e.target.closest('.pw-chip');
+            if (chip && !isWaitingForResponse) {
+                const prompt = chip.getAttribute('data-prompt');
+                if (prompt) {
+                    chatInput.value = prompt;
+                    sendMessage();
+                }
+            }
+        });
+    }
+
+    if (chatForm) {
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            sendMessage();
+        });
+    }
+
+    // Markdown Parser Helper
+    function formatMarkdown(text) {
+        if (!text) return '';
+        
+        let sanitized = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        // Bold
+        sanitized = sanitized.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        sanitized = sanitized.replace(/__(.*?)__/g, '<strong>$1</strong>');
+
+        // Italic
+        sanitized = sanitized.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        sanitized = sanitized.replace(/_(.*?)_/g, '<em>$1</em>');
+
+        // Markdown links [text](url)
+        sanitized = sanitized.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+        // Convert lists and line breaks
+        const lines = sanitized.split('\n');
+        let inList = false;
+        let html = '';
+
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim();
+            
+            if (/^(\*|-|\+)\s+(.+)$/.test(line)) {
+                const itemContent = line.replace(/^(\*|-|\+)\s+/, '');
+                if (!inList) {
+                    html += '<ul>';
+                    inList = true;
+                }
+                html += `<li>${itemContent}</li>`;
+            } else if (/^\d+\.\s+(.+)$/.test(line)) {
+                const itemContent = line.replace(/^\d+\.\s+/, '');
+                if (!inList) {
+                    html += '<ol>';
+                    inList = 'ol';
+                }
+                html += `<li>${itemContent}</li>`;
+            } else {
+                if (inList === true) {
+                    html += '</ul>';
+                    inList = false;
+                } else if (inList === 'ol') {
+                    html += '</ol>';
+                    inList = false;
+                }
+                
+                if (line.length > 0) {
+                    html += `<p>${line}</p>`;
+                }
+            }
+        }
+
+        if (inList === true) html += '</ul>';
+        if (inList === 'ol') html += '</ol>';
+
+        return html;
+    }
+
+    function appendMessage(sender, text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `pw-message pw-${sender}-message`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = 'pw-msg-avatar';
+        avatar.textContent = sender === 'user' ? '👤' : '🩺';
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'pw-msg-bubble';
+        
+        if (sender === 'bot') {
+            bubble.innerHTML = formatMarkdown(text);
+        } else {
+            const p = document.createElement('p');
+            p.textContent = text;
+            bubble.appendChild(p);
+        }
+
+        msgDiv.appendChild(avatar);
+        msgDiv.appendChild(bubble);
+        messagesContainer.appendChild(msgDiv);
+        scrollToBottom();
+    }
+
+    function scrollToBottom() {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Send Message
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text || isWaitingForResponse) return;
+
+        // Hide suggestions once user starts chatting
+        if (suggestionsContainer && suggestionsContainer.parentNode) {
+            suggestionsContainer.style.display = 'none';
+        }
+
+        // Add user message
+        appendMessage('user', text);
+        chatHistory.push({ role: 'user', content: text });
+        
+        chatInput.value = '';
+        chatInput.style.height = 'auto';
+        
+        // Show Typing Indicator
+        isWaitingForResponse = true;
+        typingIndicator.classList.remove('pw-hidden');
+        messagesContainer.appendChild(typingIndicator);
+        scrollToBottom();
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: text,
+                    history: chatHistory.slice(0, -1), // previous turns
+                    context: currentContext
+                })
+            });
+
+            const data = await response.json();
+            
+            // Remove typing indicator
+            typingIndicator.classList.add('pw-hidden');
+            
+            if (response.ok && data.reply) {
+                appendMessage('bot', data.reply);
+                chatHistory.push({ role: 'model', content: data.reply });
+            } else {
+                appendMessage('bot', `⚠️ ${data.error || 'Unable to connect to PredictWellness AI. Please check your network or API key.'}`);
+            }
+        } catch (err) {
+            typingIndicator.classList.add('pw-hidden');
+            appendMessage('bot', `❌ Network error: Could not reach the server (${err.message}).`);
+        } finally {
+            isWaitingForResponse = false;
+            scrollToBottom();
+        }
+    }
+
+    // Expose Global Helper to open chat from prediction results
+    window.askMedicalAIAboutResult = function(disease, prediction) {
+        currentContext = { disease: disease, prediction: prediction };
+        toggleChat(true);
+        
+        const conditionName = disease ? disease.charAt(0).toUpperCase() + disease.slice(1) : "Health";
+        const riskLevel = String(prediction) === '1' ? 'Higher Risk' : 'Low Risk';
+        const prompt = `I just received a ${conditionName} Prediction result of '${riskLevel}'. Could you please explain what this means, key risk factors, and recommended lifestyle or diet steps?`;
+        
+        chatInput.value = prompt;
+        sendMessage();
+    };
+})();
+</script>
+

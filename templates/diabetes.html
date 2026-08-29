@@ -18,6 +18,15 @@
 
     <!-- Main Content -->
     <main class="content-wrapper">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-alert flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
         <form action="{{ url_for('predict', disease='diabetes') }}" method="post">
             <h1>Diabetes Prediction</h1>
             
@@ -86,18 +95,14 @@
                         However, maintaining a healthy lifestyle and regular check-ups is always beneficial.
                     {% endif %}
                 </p>
+                <button type="button" class="pw-ask-ai-result-btn" onclick="askMedicalAIAboutResult('diabetes', '{{ prediction }}')">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    Ask PredictWellness AI to Explain This Result
+                </button>
             </div>
         {% endif %}
     </main>
 
-    <!-- Chatbot Integration -->
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-    <df-messenger
-        chat-icon="https://as2.ftcdn.net/v2/jpg/01/34/29/31/1000_F_134293169_ymHT6Lufl0i94WzyE0NNMyDkiMCH9HWx.jpg"
-        intent="WELCOME"
-        chat-title="Ask_Me"
-        agent-id="56eda098-8dd9-4db1-be9f-9112c15f5805"
-        language-code="en">
-    </df-messenger>
+    {% include 'chatbot.html' %}
 </body>
 </html>

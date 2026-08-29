@@ -1,9 +1,21 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+import werkzeug
+if not hasattr(werkzeug, '__version__'):
+    werkzeug.__version__ = '3.1.8'
+
+from dotenv import load_dotenv
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from src.pipeline.predict_pipeline import PredictPipeline, HeartData, DiabetesData, StrokeData, LiverData
+from src.pipeline.chatbot_pipeline import ChatbotPipeline
+
+# Load environment variables from .env
+load_dotenv()
 
 application = Flask(__name__)   
 application.secret_key = 'VIVEK2003'
+
+# Initialize Gemini Medical Chatbot pipeline
+chatbot_pipeline = ChatbotPipeline()
 
 @application.route('/')
 def home():
@@ -13,6 +25,31 @@ def home():
 @application.route('/about')
 def about():
     return render_template('about.html')
+
+@application.route('/api/chat', methods=['POST'])
+def chat():
+    """
+    API endpoint for Gemini-powered Medical Chatbot.
+    Accepts JSON: { "message": "...", "history": [...], "context": {...} }
+    Returns JSON: { "reply": "..." }
+    """
+    try:
+        data = request.get_json() or {}
+        user_message = data.get('message', '').strip()
+        history = data.get('history', [])
+        context = data.get('context', {})
+
+        if not user_message:
+            return jsonify({'error': 'Message cannot be empty.'}), 400
+
+        reply = chatbot_pipeline.get_response(
+            user_message=user_message,
+            history=history,
+            context=context
+        )
+        return jsonify({'reply': reply})
+    except Exception as e:
+        return jsonify({'error': f"Internal Server Error: {str(e)}"}), 500
 
 @application.route('/predict/<disease>', methods=['GET', 'POST'])
 def predict(disease):
@@ -86,13 +123,14 @@ def predict(disease):
             print("Prediction:", prediction)
 
             # Return result to the same page with prediction
-            return render_template(f'{disease}.html', prediction=prediction[0])
+            return render_template(f'{disease}.html', prediction=prediction[0], disease=disease)
 
         except Exception as e:
             flash(f'Error during prediction: {str(e)}', 'error')
             return redirect(url_for('predict', disease=disease))
 
-    return render_template(f'{disease}.html', prediction=None)
+    return render_template(f'{disease}.html', prediction=None, disease=disease)
 
 if __name__ == '__main__':
     application.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+
