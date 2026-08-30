@@ -95,10 +95,14 @@ class ChatbotPipeline:
                 disease = context.get('disease')
                 prediction = context.get('prediction')
                 if disease and prediction is not None:
-                    status = "Higher Risk" if str(prediction) == "1" else "Low Risk"
+                    try:
+                        is_high_risk = float(prediction) == 1.0 or str(prediction).strip().startswith('1')
+                    except (ValueError, TypeError):
+                        is_high_risk = str(prediction).strip() == "1"
+                    status = "Higher Risk" if is_high_risk else "Low Risk"
                     augmented_message = (
                         f"[Context: User just received a {disease.capitalize()} prediction result of '{status}']\n\n"
-                        f"User Query: {user_message}"
+                        f"User Query: {augmented_message}"
                     )
 
             # Build contents from conversation history

@@ -342,7 +342,8 @@
         toggleChat(true);
         
         const conditionName = disease ? disease.charAt(0).toUpperCase() + disease.slice(1) : "Health";
-        const riskLevel = String(prediction) === '1' ? 'Higher Risk' : 'Low Risk';
+        const isHighRisk = String(prediction).trim().startsWith('1') || parseFloat(prediction) === 1.0 || parseInt(prediction) === 1;
+        const riskLevel = isHighRisk ? 'Higher Risk' : 'Low Risk';
         const prompt = `I just received a ${conditionName} Prediction result of '${riskLevel}'. Could you please explain what this means, key risk factors, and recommended lifestyle or diet steps?`;
         
         chatInput.value = prompt;
