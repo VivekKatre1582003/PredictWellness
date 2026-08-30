@@ -43,18 +43,27 @@ class ChatbotPipeline:
         ]
 
     def _get_api_key(self) -> str:
-        """Fetch API key from project .env or os.environ."""
-        if ENV_PATH.exists():
-            vals = dotenv_values(ENV_PATH)
-            key = vals.get("GEMINI_API_KEY", "").strip()
-            if key and key != "your_gemini_api_key_here" and "your_key" not in key:
-                return key
-        
-        # Fallback to system environment
-        load_dotenv(override=True)
+        """Fetch API key from system environment or project .env."""
+        # 1. Check system environment first (primary source for cloud platforms like Render)
         env_key = os.getenv("GEMINI_API_KEY", "").strip()
         if env_key and env_key != "your_gemini_api_key_here" and "your_key" not in env_key:
             return env_key
+
+        # 2. Check local .env file as fallback (for local development)
+        if ENV_PATH.exists():
+            try:
+                vals = dotenv_values(ENV_PATH)
+                key = vals.get("GEMINI_API_KEY", "").strip()
+                if key and key != "your_gemini_api_key_here" and "your_key" not in key:
+                    return key
+            except Exception as e:
+                logging.warning(f"Failed to read local .env values: {e}")
+        
+        # 3. Reload dotenv as last resort
+        load_dotenv(override=True)
+        env_key_fallback = os.getenv("GEMINI_API_KEY", "").strip()
+        if env_key_fallback and env_key_fallback != "your_gemini_api_key_here" and "your_key" not in env_key_fallback:
+            return env_key_fallback
 
         return None
 
