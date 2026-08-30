@@ -10,8 +10,8 @@ class PredictPipeline:
 
     def predict(self, features):
         try:
-            model_path = os.path.join("artifacts", f"{self.disease}_model.pkl")
-            preprocessor_path = os.path.join('artifacts', f"preprocessor_{self.disease}.pkl")
+            model_path = os.path.join("artifacts", f"{self.disease.capitalize()}_model.pkl")
+            preprocessor_path = os.path.join('artifacts', f"preprocessor_{self.disease.capitalize()}.pkl")
             
             # Debugging: Print statements to verify paths and loading
             print(f"Loading model from {model_path}")
